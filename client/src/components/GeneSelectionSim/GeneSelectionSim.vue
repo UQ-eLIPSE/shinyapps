@@ -2,7 +2,7 @@
     <div>
         <gene-selection-sim-side-nav/>
         <div class="container">
-            <h1>Experimental Site</h1>
+            <h1>Selection Simulation</h1>
             <div id="freq">
             </div>
             <div id="prop">
@@ -24,6 +24,7 @@ import Plotly, { PlotData } from "plotly.js";
 import { EventBus, EventBusEvents } from "../../EventBus";
 import { rmultinom, createXArray, transposeMatrix } from "../../Utils";
 import GeneSelectionSimSideNav from "./GeneSelectionSimSideNav.vue";
+import { StyleGuide } from "../../colours_schemes";
 
 const NUM_ALLELES = 2;
 const NUM_GENO_TYPES = 3;
@@ -135,7 +136,7 @@ export default class GeneSelectionSim extends Vue {
                     GENOTYPE: "R/W"
                 }, {
                     GENERATION: i,
-                    PROPORTION: (1 - R_G) * (1 * R_G),
+                    PROPORTION: (1 - R_G) * (1 - R_G),
                     GENOTYPE: "W/W"
                 }];
             } else {
@@ -197,25 +198,33 @@ export default class GeneSelectionSim extends Vue {
             title: `Diploid population size = ${infinitePopulation ? "Infinite" : populationSize}`,
             yaxis: {
                 title: "Frequency",
-                range: defaultYaxis
+                range: defaultYaxis,
+                gridcolor: StyleGuide.WHITE
             },
             xaxis: {
                 title: "Generation",
-                range: defaultXaxis
-            }
+                range: defaultXaxis,
+                gridcolor: StyleGuide.WHITE
+            },
+            plot_bgcolor: StyleGuide.GREY,
+            paper_bgcolor: StyleGuide.GREY
         };
 
         const layoutProp: Partial<Plotly.Layout> = {
             title: `Diploid population size = ${infinitePopulation ? "Infinite" : populationSize}`,
             yaxis: {
                 title: "Proportion",
-                range: defaultYaxis
+                range: defaultYaxis,
+                gridcolor: StyleGuide.WHITE
             },
             xaxis: {
                 title: "Generation",
-                range: defaultXaxis
+                range: defaultXaxis,
+                gridcolor: StyleGuide.WHITE
             },
-            barmode: "stack"
+            barmode: "stack",
+            plot_bgcolor: StyleGuide.GREY,
+            paper_bgcolor: StyleGuide.GREY
         };
 
         // Graph configurations
@@ -228,13 +237,16 @@ export default class GeneSelectionSim extends Vue {
         for (let j = 0; j < NUM_ALLELES; j++) {
             // Ref allele
             let refAllele: string;
+            let colourString: StyleGuide;
             switch (j) {
                 case 0:
                     refAllele = "R";
+                    colourString = StyleGuide.RED;
                     break;
                 case 1:
                 default:
                     refAllele = "W";
+                    colourString = StyleGuide.WHITE;
                     break;
             }
 
@@ -253,7 +265,10 @@ export default class GeneSelectionSim extends Vue {
                     return arr;
                 }, []),
                 type: "scatter",
-                name: refAllele
+                name: refAllele,
+                line: {
+                    color: colourString
+                }
             };
 
             tracesFreq.push(traceFreq);
@@ -261,18 +276,24 @@ export default class GeneSelectionSim extends Vue {
 
         for (let j = 0; j < NUM_GENO_TYPES; j++) {
             let refGeno: string;
+            let colourString: StyleGuide;
             switch (j) {
-                case 0:
+                case 2:
                     refGeno = "R/R";
+                    colourString = StyleGuide.RED;
+                    break;
+                case 0:
+                    refGeno = "W/W";
+                    colourString = StyleGuide.WHITE;
                     break;
                 case 1:
-                    refGeno = "W/W";
-                    break;
-                case 2:
                 default:
                     refGeno = "R/W";
+                    colourString = StyleGuide.PLUM;
                     break;
             }
+
+
 
             const traceProp: Partial<PlotData> = {
                 x: genoTable.reduce((arr: number[], element) => {
@@ -289,7 +310,10 @@ export default class GeneSelectionSim extends Vue {
                     return arr;
                 }, []),
                 type: "bar",
-                name: refGeno
+                name: refGeno,
+                marker: {
+                    color: colourString
+                }
             };
 
             tracesProp.push(traceProp);

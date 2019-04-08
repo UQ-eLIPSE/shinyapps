@@ -80,7 +80,7 @@ export default class GeneFlowSimSideNav extends Vue {
     private displayAllelePop2: number = 0;
 
     private MIN_POPULATION = 10;
-    private MAX_POPULATION = 20000;
+    private MAX_POPULATION = 2000;
 
     private MIN_MIGRANT_1 = 0;
     private MAX_MIGRANT_1 = 0.5;

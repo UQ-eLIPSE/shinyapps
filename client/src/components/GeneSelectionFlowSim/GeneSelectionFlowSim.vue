@@ -28,6 +28,7 @@ import Plotly, { PlotData } from "plotly.js";
 import { EventBus, EventBusEvents } from "../../EventBus";
 import { rmultinom, createXArray, transposeMatrix } from "../../Utils";
 import GeneSelectionFlowSimSideNav from "./GeneSelectionFlowSimSideNav.vue";
+import { StyleGuide } from "../../colours_schemes";
 
 enum PopulationType {
     POPULATION_1 = "Pop1",
@@ -299,25 +300,32 @@ export default class GeneflowSim extends Vue {
             title: `Diploid population size = ${infinitePopulation ? "Infinite" : populationSize}`,
             yaxis: {
                 title: "Frequency",
-                range: defaultYaxis
+                range: defaultYaxis,
+                gridcolor: StyleGuide.WHITE
             },
             xaxis: {
                 title: "Generation",
-                range: defaultXaxis
-            }
+                range: defaultXaxis,
+                gridcolor: StyleGuide.WHITE
+            },
+            paper_bgcolor: StyleGuide.GREY,
+            plot_bgcolor: StyleGuide.GREY
         };
 
         const layoutProp: Partial<Plotly.Layout> = {
-            title: `Diploid population size = ${infinitePopulation ? "Infinite" : populationSize}`,
             yaxis: {
                 title: "Proportion",
-                range: defaultYaxis
+                range: defaultYaxis,
+                gridcolor: StyleGuide.WHITE
             },
             xaxis: {
                 title: "Generation",
-                range: defaultXaxis
+                range: defaultXaxis,
+                gridcolor: StyleGuide.WHITE
             },
-            barmode: "stack"
+            barmode: "stack",
+            paper_bgcolor: StyleGuide.GREY,
+            plot_bgcolor: StyleGuide.GREY
         };
 
         for (let i = 0 ; i < NUM_POP_TYPES; i++) {
@@ -328,7 +336,10 @@ export default class GeneflowSim extends Vue {
             let refPop: PopulationType;
             let refFreqGraph: string;
             let refPropGraph: string;
-
+            layoutProp.title = `Diploid population size = ${infinitePopulation ? "Infinite" : populationSize}`
+                + ` for population ${i + 1}`;
+            layoutFreq.title = `Diploid population size = ${infinitePopulation ? "Infinite" : populationSize}`
+                + ` for population ${i + 1}`;
             switch (i) {
                 case 0:
                     refPop = PopulationType.POPULATION_1;
@@ -346,13 +357,16 @@ export default class GeneflowSim extends Vue {
             for (let j = 0; j < NUM_ALLELES; j++) {
                 // Ref allele
                 let refAllele: string;
+                let refColor: StyleGuide;
                 switch (j) {
                     case 0:
                         refAllele = "R";
+                        refColor = StyleGuide.RED;
                         break;
                     case 1:
                     default:
                         refAllele = "W";
+                        refColor = StyleGuide.WHITE;
                         break;
                 }
 
@@ -371,7 +385,10 @@ export default class GeneflowSim extends Vue {
                         return arr;
                     }, []),
                     type: "scatter",
-                    name: refAllele
+                    name: refAllele,
+                    line: {
+                        color: refColor
+                    }
                 };
 
                 tracesFreq.push(traceFreq);
@@ -379,16 +396,20 @@ export default class GeneflowSim extends Vue {
 
             for (let j = 0; j < NUM_GENO_TYPES; j++) {
                 let refGeno: string;
+                let refColor: StyleGuide;
                 switch (j) {
                     case 0:
-                        refGeno = "R/R";
+                        refGeno = "W/W";
+                        refColor = StyleGuide.WHITE;
                         break;
                     case 1:
-                        refGeno = "W/W";
+                        refGeno = "R/W";
+                        refColor = StyleGuide.PLUM;
                         break;
                     case 2:
                     default:
-                        refGeno = "R/W";
+                        refGeno = "R/R";
+                        refColor = StyleGuide.RED;
                         break;
                 }
 
@@ -407,7 +428,10 @@ export default class GeneflowSim extends Vue {
                         return arr;
                     }, []),
                     type: "bar",
-                    name: refGeno
+                    name: refGeno,
+                    marker: {
+                        color: refColor
+                    }
                 };
 
                 tracesProp.push(traceProp);

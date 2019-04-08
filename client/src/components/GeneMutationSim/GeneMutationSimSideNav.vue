@@ -11,7 +11,6 @@
             <h3>Mutation Rate</h3>
             <select v-model.number="mutationRate">
                 <option :value="0">0</option>
-                <option :value="0.0005">1 / 500 (5e-3)</option>
                 <option :value="0.0001">1 / 1000 (1e-3)</option>
                 <option :value="0.0001">1 / 10000 (1e-4)</option>
                 <option :value="0.00001">1 / 100000 (1e-5)</option>
@@ -54,7 +53,7 @@ export default class GeneMutationSimSideNav extends Vue {
     private displayPopulationSize: number = 10;
 
     private MIN_POPULATION = 10;
-    private MAX_POPULATION = 20000;
+    private MAX_POPULATION = 1000;
 
     private mounted() {
         $("#slider1").slider({

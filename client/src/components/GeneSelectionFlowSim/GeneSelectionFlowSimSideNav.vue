@@ -21,12 +21,12 @@
             <div id="slider3"></div>
         </div>                
         <div>
-            <h3>% migrants into Population 1</h3>
+            <h3>% migrants of Population 1 into 2</h3>
             <span>Current Value: {{displayMigrantPop1}}</span>
             <div id="slider4"></div>
         </div>
         <div>
-            <h3>% migrants into Population 2</h3>
+            <h3>% migrants of Population 2 into Population 1</h3>
             <span>Current Value: {{displayMigrantPop2}}</span>
             <div id="slider5"></div>
             
@@ -97,7 +97,7 @@ export default class GeneFlowSimSideNav extends Vue {
 
 
     private MIN_POPULATION = 10;
-    private MAX_POPULATION = 20000;
+    private MAX_POPULATION = 1000;
 
     private MIN_MIGRANT_1 = 0;
     private MAX_MIGRANT_1 = 0.5;

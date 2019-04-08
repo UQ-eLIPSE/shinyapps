@@ -2,7 +2,7 @@
     <div>
         <gene-mutation-sim-side-nav/>
         <div class="container">
-            <h1>Experimental Site</h1>
+            <h1>Mutation simulation</h1>
             <div id="freq">
             </div>
             <div id="prop">
@@ -24,6 +24,7 @@ import Plotly, { PlotData } from "plotly.js";
 import { EventBus, EventBusEvents } from "../../EventBus";
 import { rmultinom, createXArray, transposeMatrix, rBinomialDistribution, sample } from "../../Utils";
 import GeneMutationSimSideNav from "./GeneMutationSimSideNav.vue";
+import { StyleGuide } from "../../colours_schemes";
 
 const NUM_ALLELES = 2;
 const NUM_GENO_TYPES = 3;
@@ -171,15 +172,19 @@ export default class GeneflowSim extends Vue {
 
         // Start graphing. Layout constant
         const layoutFreq: Partial<Plotly.Layout> = {
-            title: `Diploid population size = ${populationSize}`,
+            title: `Diploid population size = ${populationSize}; Mutation rate = ${mutationRate}`,
             yaxis: {
-                title: "Frequency",
-                range: defaultYaxis
+                title: "Proportion",
+                range: defaultYaxis,
+                gridcolor: StyleGuide.WHITE
             },
             xaxis: {
                 title: "Generation",
-                range: defaultXaxis
-            }
+                range: defaultXaxis,
+                gridcolor: StyleGuide.WHITE
+            },
+            paper_bgcolor: StyleGuide.GREY,
+            plot_bgcolor: StyleGuide.GREY
         };
 
         // Graph configurations
@@ -189,7 +194,7 @@ export default class GeneflowSim extends Vue {
 
         const alleleArr = Array.from(alleleSet);
         for (let j = 0; j < alleleArr.length; j++) {
-
+            // Assign a random colour
             const traceFreq: Partial<PlotData> = {
                 x: freqTable.reduce((arr: number[], element) => {
                     if (element.ALLELE === alleleArr[j]) {

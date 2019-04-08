@@ -2,7 +2,7 @@
     <div>
         <gene-drift-sim-side-nav/>
         <div class="container">
-            <h1>Experimental Site</h1>
+            <h1>Drift Simulation</h1>
             <div id="frequency">
             </div>
             <div id="proportion">
@@ -24,6 +24,7 @@ import Plotly, { PlotData } from "plotly.js";
 import { EventBus, EventBusEvents } from "../../EventBus";
 import { rmultinom, createXArray, transposeMatrix } from "../../Utils";
 import GeneDriftSimSideNav from "./GeneDriftSimSideNav.vue";
+import { StyleGuide } from "../../colours_schemes";
 
 interface FrequencyTableEntry {
     GENERATION: number;
@@ -37,6 +38,9 @@ interface GenoTypeProportionEntry {
     PROPORTION: number;
 }
 
+const alleleTypes = ["R", "W"];
+const genoTypes = ["W/W", "R/W", "R/R"];
+const defaultYaxis = [0, 1];
 @Component({
     components: {
         GeneDriftSimSideNav
@@ -90,26 +94,38 @@ export default class GeneflowSim extends Vue {
         }
 
 
-        // Find the set of allelles
-        const allelleSet = new Set<string>();
-
-        frequencyTable.forEach((element) => {
-            allelleSet.add(element.ALLELE);
-        });
+        // Define the allele array order
 
         // Graph configurations
         const tracesFreq: Array<Partial<PlotData>> = [];
         const layoutFreq: Partial<Plotly.Layout> = {
             title: `Diploid population size = ${populationSize}`,
             yaxis: {
-                title: "Frequency"
+                title: "Frequency",
+                gridcolor: StyleGuide.WHITE,
+                range: defaultYaxis
             },
             xaxis: {
-                title: "Generation"
-            }
+                title: "Generation",
+                gridcolor: StyleGuide.WHITE
+            },
+            plot_bgcolor: StyleGuide.GREY,
+            paper_bgcolor: StyleGuide.GREY
         };
 
-        Array.from(allelleSet).forEach((allele) => {
+        for (let i = 0; i < alleleTypes.length; i++) {
+
+            const allele = alleleTypes[i];
+            let refColour: StyleGuide = StyleGuide.BLACK;
+            switch (allele) {
+                case "W":
+                    refColour = StyleGuide.WHITE;
+                    break;
+                case "R":
+                    refColour = StyleGuide.RED;
+                    break;
+            }
+
             const trace: Partial<PlotData> = {
                 x: frequencyTable.reduce((arr: number[], element) => {
                     if (element.ALLELE === allele) {
@@ -125,11 +141,14 @@ export default class GeneflowSim extends Vue {
                     return arr;
                 }, []),
                 type: "scatter",
-                name: allele
+                name: allele,
+                line: {
+                    color: refColour
+                }
             };
 
             tracesFreq.push(trace);
-        });
+        }
 
         // Do the same with the genotypes
         const genoSet = new Set<string>();
@@ -143,15 +162,35 @@ export default class GeneflowSim extends Vue {
         const layoutProp: Partial<Plotly.Layout> = {
             title: `Diploid population size = ${populationSize}`,
             yaxis: {
-                title: "Proportion"
+                title: "Proportion",
+                gridcolor: StyleGuide.WHITE,
+                range: defaultYaxis
             },
             xaxis: {
-                title: "Generation"
+                title: "Generation",
+                gridcolor: StyleGuide.WHITE
             },
-            barmode: "stack"
+            barmode: "stack",
+            plot_bgcolor: StyleGuide.GREY,
+            paper_bgcolor: StyleGuide.GREY
         };
 
-        Array.from(genoSet).forEach((genotype) => {
+        for (let i = 0; i < genoTypes.length; i++) {
+            const genotype = genoTypes[i];
+
+            let refColour: StyleGuide = StyleGuide.BLACK;
+            switch (genotype) {
+                case "W/W":
+                    refColour = StyleGuide.WHITE;
+                    break;
+                case "R/R":
+                    refColour = StyleGuide.RED;
+                    break;
+                case "R/W":
+                    refColour = StyleGuide.PLUM;
+                    break;
+            }
+
             const trace: Partial<PlotData> = {
                 x: genoTypeTable.reduce((arr: number[], element) => {
                     if (element.GENOTYPE === genotype) {
@@ -167,11 +206,14 @@ export default class GeneflowSim extends Vue {
                     return arr;
                 }, []),
                 name: genotype,
-                type: "bar"
+                type: "bar",
+                marker: {
+                    color: refColour
+                }
             };
 
             tracesProp.push(trace);
-        });
+        }
 
         Plotly.react("frequency", tracesFreq, layoutFreq);
         Plotly.react("proportion", tracesProp, layoutProp);
@@ -201,7 +243,6 @@ export default class GeneflowSim extends Vue {
 
         // Create the summation of frequencies
         const frequencyOutput: FrequencyTableEntry[] = [];
-
 
         for (let i = 0 ; i < ALLELE_NAMES.length; i++) {
             // Find the index that matches the allele name. Also divide by 2 for child purposes
