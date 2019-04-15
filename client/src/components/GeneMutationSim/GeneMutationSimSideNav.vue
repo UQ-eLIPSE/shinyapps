@@ -1,11 +1,10 @@
 <template>
     <div class="sidebar">
+        <h1>Mutation simulation</h1>
         <h2>Population parameters</h2>
         <div>
             <h3>Diploid population size</h3>
-            <span>Current Value: {{displayPopulationSize}}</span>
-            <div id="slider1"></div>
-            
+            <span>Fixed Value: {{displayPopulationSize}}</span>            
         </div>
         <div>
             <h3>Mutation Rate</h3>
@@ -45,12 +44,12 @@ import { EventBus, EventBusEvents } from "../../EventBus";
 @Component
 export default class GeneMutationSimSideNav extends Vue {
 
-    private populationSize: number = 10;
+    private populationSize: number = 1000;
     private mutationRate: number = 0;
 
     private populationStep = 10;
 
-    private displayPopulationSize: number = 10;
+    private displayPopulationSize: number = 1000;
 
     private MIN_POPULATION = 10;
     private MAX_POPULATION = 1000;

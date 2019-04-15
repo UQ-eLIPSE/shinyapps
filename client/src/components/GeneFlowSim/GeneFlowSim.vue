@@ -1,17 +1,16 @@
 <template>
     <div>
         <gene-flow-sim-side-nav/>
-        <div class="container">
-            <h1>Gene flow simulation</h1>
-            <div id="freq1">
-            </div>
-            <div id="freq2">
-            </div>
-            <div id="prop1">
-            </div>
-            <div id="prop2">
-            </div>            
-        </div>
+        <table class="graphArea">
+            <tr>
+                <td><div class="flex-child" id="freq1"></div></td>
+                <td><div class="flex-child" id="prop1"></div></td>
+            </tr>
+            <tr>
+                <td><div class="flex-child" id="freq2"></div></td>
+                <td><div class="flex-child" id="prop2"></div></td>
+            </tr>
+        </table>
     </div>
 </template>
 

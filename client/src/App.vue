@@ -16,7 +16,7 @@
 
     display: flex;
     flex-direction: row;
-    flex-wrap: no-wrap;
+    flex-wrap: nowrap;
       
     overflow-y: scroll;
 }

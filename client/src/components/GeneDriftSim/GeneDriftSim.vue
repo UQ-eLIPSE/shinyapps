@@ -2,7 +2,6 @@
     <div>
         <gene-drift-sim-side-nav/>
         <div class="container">
-            <h1>Drift Simulation</h1>
             <div id="frequency">
             </div>
             <div id="proportion">

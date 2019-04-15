@@ -2,7 +2,6 @@
     <div>
         <gene-selection-sim-side-nav/>
         <div class="container">
-            <h1>Selection Simulation</h1>
             <div id="freq">
             </div>
             <div id="prop">

@@ -2,7 +2,6 @@
     <div>
         <gene-mutation-sim-side-nav/>
         <div class="container">
-            <h1>Mutation simulation</h1>
             <div id="freq">
             </div>
             <div id="prop">
