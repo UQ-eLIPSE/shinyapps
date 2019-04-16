@@ -1,11 +1,11 @@
 <template>
     <div class="sidebar">
         <h1>Simulations</h1>
-        <router-link to="/drift-sim">Drift Simulation</router-link>
-        <router-link to="/flow-sim">Flow Simulation</router-link>
-        <router-link to="/selection-sim">Selection Simulation</router-link>
-        <router-link to="/mutation-sim">Mutation Simulation</router-link>
-        <router-link to="/selection-flow-sim">Selection Flow Simulation</router-link>
+        <router-link to="/drift-sim">Drift simulation</router-link>
+        <router-link to="/flow-sim">Gene flow simulation</router-link>
+        <router-link to="/selection-sim">Selection simulation</router-link>
+        <router-link to="/mutation-sim">Mutation simulation</router-link>
+        <router-link to="/selection-flow-sim">Selection and gene flow simulation</router-link>
 
     </div>
 </template>

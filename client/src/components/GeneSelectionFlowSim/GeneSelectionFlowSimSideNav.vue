@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <h1>Selection Flow Simulation</h1>
+        <h1>Selection and gene flow simulation</h1>
         <h2>Population parameters</h2>
         <div>
             <input v-model="infinitePopulation" id="infPop" type="checkbox"/> Infinite Population?

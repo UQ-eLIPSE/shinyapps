@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <h1>Drift Simulation</h1>
+        <h1>Drift simulation</h1>
         <h2>Population parameters</h2>
         <div>
             <h3>Diploid population size</h3>
